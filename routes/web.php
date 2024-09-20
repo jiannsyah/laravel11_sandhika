@@ -8,6 +8,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Homepage', [
         'title' => "laravel with shadcn",
+        'company' => "Aristi Information Service"
     ]);
 });
 Route::get('/welcome', function () {
