@@ -1,9 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import { Projects } from "./type/type";
+import { Tasks } from "./type/type";
 import React from "react";
 import Pagination from "@/Components/Pagination";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constant";
+import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constant";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 import TableHeading from "@/Components/TableHeading";
@@ -12,15 +12,15 @@ type QueryParamsType = {
     [status: string]: string | number;
 };
 
-interface ProjectProps {
-    projects: Projects;
+interface TaskProps {
+    tasks: Tasks;
     queryParams: QueryParamsType;
 }
 
-const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
+const Index: React.FC<TaskProps> = ({ tasks, queryParams = null }) => {
     queryParams = queryParams || {};
-    // console.log(PROJECT_STATUS_CLASS_MAP["pending"]);
-    console.log(queryParams);
+    // console.log(TASK_STATUS_CLASS_MAP["pending"]);
+    // console.log(tasks);
 
     const searchFieldChange = (
         name: string,
@@ -34,7 +34,7 @@ const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
             delete queryParams[name];
         }
 
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
 
     const onKeyPress = (name: string, e: any) => {
@@ -52,19 +52,19 @@ const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Projects
+                    Tasks
                 </h2>
             }
         >
-            <Head title="Projects" />
-            {/* <pre>{JSON.stringify(projects, undefined, 2)}</pre> */}
+            <Head title="Tasks" />
+            {/* <pre>{JSON.stringify(tasks, undefined, 2)}</pre> */}
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
@@ -124,7 +124,7 @@ const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
                             <TextInput
                                 defaultValue={queryParams.name}
                                 className="w-full"
-                                placeholder="Project Name"
+                                placeholder="Task Name"
                                 onBlur={(
                                     e: React.FocusEvent<HTMLInputElement>
                                 ) => searchFieldChange("name", e.target.value)}
@@ -154,45 +154,44 @@ const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.data.map((project) => (
+                    {tasks.data.map((task) => (
                         <tr
-                            key={project.id}
+                            key={task.id}
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                         >
-                            <td className="px-3 py-2">{project.id}</td>
+                            <td className="px-3 py-2">{task.id}</td>
                             <td className="px-3 py-2">
                                 <img
-                                    src={project.image_path}
+                                    src={task.image_path}
                                     alt=""
                                     style={{ width: 60 }}
                                 />
                             </td>
-                            <td className="px-3 py-2">{project.name}</td>
-                            {/* <td className="px-3 py-2">{project.status}</td> */}
+                            <td className="px-3 py-2">{task.name}</td>
                             <td className="px-3 py-2">
                                 <span
                                     className={
                                         "px-2 py-1 rounded text-white " +
-                                        PROJECT_STATUS_CLASS_MAP[project.status]
+                                        TASK_STATUS_CLASS_MAP[task.status]
                                     }
                                 >
-                                    {PROJECT_STATUS_TEXT_MAP[project.status]}
+                                    {TASK_STATUS_TEXT_MAP[task.status]}
                                 </span>
                             </td>
-                            <td className="px-3 py-2">{project.created_at}</td>
-                            <td className="px-3 py-2">{project.due_date}</td>
+                            <td className="px-3 py-2">{task.created_at}</td>
+                            <td className="px-3 py-2">{task.due_date}</td>
                             <td className="px-3 py-2">
-                                {project.created_by.name}
+                                {task.created_by.name}
                             </td>
                             <td className="px-3 py-2">
                                 <Link
-                                    href={route("project.edit", project.id)}
+                                    href={route("task.edit", task.id)}
                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                 >
                                     Edit
                                 </Link>
                                 <Link
-                                    href={route("project.destroy", project.id)}
+                                    href={route("task.destroy", task.id)}
                                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                 >
                                     Delete
@@ -202,8 +201,8 @@ const Index: React.FC<ProjectProps> = ({ projects, queryParams = null }) => {
                     ))}
                 </tbody>
             </table>
-            {projects.meta?.links && (
-                <Pagination links={projects.meta?.links ?? undefined} />
+            {tasks.meta?.links && (
+                <Pagination links={tasks.meta?.links ?? undefined} />
             )}
         </AuthenticatedLayout>
     );

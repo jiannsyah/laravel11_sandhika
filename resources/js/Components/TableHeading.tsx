@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 type TableHeadingProps = {
     name: string;
     sortable?: boolean;
-    sort_field: string | null;
-    sort_direction: string | null;
+    sort_field: string | number | null;
+    sort_direction: string | number | null;
     sortChanged: (name: string) => void;
     children: ReactNode;
 };
